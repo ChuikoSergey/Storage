@@ -7,12 +7,17 @@ using ManagedCode.Storage.FileSystem.Extensions;
 using ManagedCode.Storage.FileSystem.Options;
 using ManagedCode.Storage.Google.Extensions;
 using ManagedCode.Storage.Google.Options;
+using WebApiSample.Interfaces;
+using WebApiSample.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IAzureStorageService, AzureStorageService>();
+
 
 #region Add FileSystemStorage
 
@@ -32,9 +37,9 @@ builder.Services.AddFileSystemStorage(new FileSystemStorageOptions
 
 builder.Services.AddAzureStorage(new AzureStorageOptions
 {
-    Container = "managed-code-bucket",
+    Container = "managedcodecontainer",
     ConnectionString =
-        "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://localhost:10000/devstoreaccount1;QueueEndpoint=http://localhost:10001/devstoreaccount1;TableEndpoint=http://localhost:10002/devstoreaccount1;"
+        "DefaultEndpointsProtocol=https;AccountName=samatheuscampostech;AccountKey=h+sAkAJariE47FFzW9Blyh2Q33c9VGfqgsHl0XqaWiQV5byoDkzzlwHwUv+oZmvR3ggS+L0AZsaY+AStVqIL1w==;EndpointSuffix=core.windows.net"
 });
 
 #endregion
@@ -62,14 +67,14 @@ builder.Services.AddAWSStorage(opt =>
 
 #region Add GCPStorage
 
-builder.Services.AddGCPStorage(new GCPStorageOptions
-{
-    BucketOptions = new BucketOptions
-    {
-        ProjectId = "api-project-0000000000000",
-        Bucket = "managed-code-bucket"
-    }
-});
+// builder.Services.AddGCPStorage(new GCPStorageOptions
+// {
+//     BucketOptions = new BucketOptions
+//     {
+//         ProjectId = "api-project-0000000000000",
+//         Bucket = "managed-code-bucket"
+//     }
+// });
 
 #endregion
 
