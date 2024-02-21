@@ -13,7 +13,7 @@ public class AzureStorageController : Controller
 
     public AzureStorageController(IAzureStorageService azureStorageService)
     {
-        _azureStorageService = azureStorageService;
+        _azureStorageService = azureStorageService ?? throw new ArgumentNullException(nameof(azureStorageService));
     }
     
     [HttpPost("upload")]
@@ -28,9 +28,9 @@ public class AzureStorageController : Controller
 
             return Ok(await _azureStorageService.UploadFileAsync(formFile));
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return StatusCode(500, $"Internal server error:{e.Message}");
+            return StatusCode(500, $"Internal server error:{ex.Message}");
         }
     }
 
@@ -43,9 +43,30 @@ public class AzureStorageController : Controller
 
             return File(result.Value.FileStream, "application/octet-stream", fileName);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return StatusCode(500, $"Internal server error: {e.Message}");
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
+    }
+
+    [HttpDelete("{fileName}")]
+    public async Task<ActionResult<Result<bool>>> DeleteFile(string fileName)
+    {
+        try
+        {
+            var result = await _azureStorageService.DeleteFileAsync(fileName);
+
+            if (result.IsFailed)
+            {
+                return NotFound("File Not Found");
+            }
+
+            return Ok(result.IsSuccess);
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }  
     }
 }
