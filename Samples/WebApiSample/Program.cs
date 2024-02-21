@@ -37,9 +37,9 @@ builder.Services.AddFileSystemStorage(new FileSystemStorageOptions
 
 builder.Services.AddAzureStorage(new AzureStorageOptions
 {
-    Container = "managedcodecontainer",
+    Container = "container-name",
     ConnectionString =
-        "DefaultEndpointsProtocol=https;AccountName=samatheuscampostech;AccountKey=h+sAkAJariE47FFzW9Blyh2Q33c9VGfqgsHl0XqaWiQV5byoDkzzlwHwUv+oZmvR3ggS+L0AZsaY+AStVqIL1w==;EndpointSuffix=core.windows.net"
+        "connection-string"
 });
 
 #endregion

@@ -7,4 +7,5 @@ public interface IAzureStorageService
 {
     Task<Result<BlobMetadata>> UploadFileAsync(IFormFile formFile);
     Task<Result<LocalFile>> DownloadFileAsync(string fileName);
+    Task<Result<bool>> DeleteFileAsync(string fileName);
 }

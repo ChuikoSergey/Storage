@@ -32,4 +32,14 @@ public class AzureStorageService : IAzureStorageService
         
         return blob;
     }
+
+    public async Task<Result<bool>> DeleteFileAsync(string fileName)
+    {
+        if (await _storage.ExistsAsync(fileName))
+        {
+            return await _storage.DeleteAsync(fileName);
+        }
+
+        return Result<bool>.Fail();
+    }
 }
