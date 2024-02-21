@@ -21,4 +21,8 @@
         <ProjectReference Include="..\..\ManagedCode.Storage.Google\ManagedCode.Storage.Google.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="managed-code-bucket\" />
+    </ItemGroup>
+
 </Project>
