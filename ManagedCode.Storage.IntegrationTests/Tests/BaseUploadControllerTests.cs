@@ -9,12 +9,14 @@ namespace ManagedCode.Storage.IntegrationTests.Tests;
 
 public abstract class BaseUploadControllerTests : BaseControllerTests
 {
-    private readonly string _uploadEndpoint;
+    private readonly string _streamEndpoint;
+    private readonly string _fileEndpoint;
     private readonly string _uploadLargeFile;
 
     protected BaseUploadControllerTests(StorageTestApplication testApplication, string apiEndpoint) : base(testApplication, apiEndpoint)
     {
-        _uploadEndpoint = string.Format(ApiEndpoints.Base.UploadFile, ApiEndpoint);
+        _fileEndpoint = string.Format(ApiEndpoints.Base.UploadFile, ApiEndpoint);
+        _streamEndpoint = string.Format(ApiEndpoints.Base.UploadStream, ApiEndpoint);
         _uploadLargeFile = string.Format(ApiEndpoints.Base.UploadLargeFile, ApiEndpoint);
     }
     
@@ -24,7 +26,7 @@ public abstract class BaseUploadControllerTests : BaseControllerTests
         var storageClient = GetStorageClient();
         await using var localFile = LocalFile.FromRandomNameWithExtension(".txt");
         FileHelper.GenerateLocalFile(localFile, 1);
-        var options = new UploadOptions { ApiEndpoint = _uploadEndpoint};
+        var options = new UploadOptions { ApiEndpoint = _streamEndpoint};
 
         var result = await storageClient.UploadAsync(localFile.FileStream, options);
 
@@ -38,7 +40,7 @@ public abstract class BaseUploadControllerTests : BaseControllerTests
         var storageClient = GetStorageClient();
         await using var localFile = LocalFile.FromRandomNameWithExtension(".txt");
         FileHelper.GenerateLocalFile(localFile, 1);
-        var options = new UploadOptions { ApiEndpoint = _uploadEndpoint};
+        var options = new UploadOptions { ApiEndpoint = _fileEndpoint};
 
         var result = await storageClient.UploadAsync(localFile.FileInfo, options);
     

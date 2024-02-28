@@ -10,7 +10,7 @@ public static class FileHelper
 
     public static LocalFile GenerateLocalFile(LocalFile file, int sizeInMegabytes)
     {
-        var sizeInBytes = sizeInMegabytes * 1024 * 1024;
+        var sizeInBytes = sizeInMegabytes * 1024;
 
         using (var fileStream = file.FileStream)
         {

@@ -12,8 +12,8 @@ namespace ManagedCode.Storage.IntegrationTests.TestApp.Controllers;
 [ApiController]
 public class FilesTestController(IFileSystemStorage storage) : BaseTestController<IFileSystemStorage>(storage)
 {
-    [HttpPost("upload")]
-    public async Task<Result<BlobMetadata>> UploadToStream(
+    [HttpPost("UploadStream")]
+    public async Task<Result<BlobMetadata>> UploadStream(
         [FromBody] Stream streamFile,
         [FromQuery] UploadOptions? options = null
         )
@@ -21,12 +21,11 @@ public class FilesTestController(IFileSystemStorage storage) : BaseTestControlle
         return await Storage.UploadAsync(streamFile, options);
     }
     
-    // [HttpPost("upload")]
-    // public async Task<Result<BlobMetadata>> UploadToFile([FromBody] IFormFile file,
-    //     UploadOptions? options = null,
-    //     CancellationToken cancellationToken = default)
-    // {
-    //     var f = await file.ToLocalFileAsync();
-    //     return await Storage.UploadAsync(f.FileInfo, options, cancellationToken);
-    // }
+    [HttpPost("UploadFile")]
+    public async Task<Result<BlobMetadata>> UploadToFile(
+        [FromBody] IFormFile formFile,
+        [FromQuery] UploadOptions? options = null)
+    {
+        return await Storage.UploadToStorageAsync(formFile, options);
+    }
 }
