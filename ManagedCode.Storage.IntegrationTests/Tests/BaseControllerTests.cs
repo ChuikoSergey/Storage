@@ -1,4 +1,5 @@
 ﻿using ManagedCode.Storage.Client;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
@@ -9,6 +10,7 @@ public abstract class BaseControllerTests
 {
     protected readonly StorageTestApplication TestApplication;
     protected readonly string ApiEndpoint;
+    private static readonly string baseTestApi = "https://localhost:44332/";
 
     protected BaseControllerTests(StorageTestApplication testApplication, string apiEndpoint)
     {
@@ -16,13 +18,14 @@ public abstract class BaseControllerTests
         ApiEndpoint = apiEndpoint;
     }
 
-    protected HttpClient GetHttpClient()
+    protected HttpClient GetHttpClient(string baseAddress = null)
     {
-        return TestApplication.CreateClient();
+        baseAddress ??= baseTestApi;
+        return TestApplication.CreateClient(new WebApplicationFactoryClientOptions{ BaseAddress = new Uri(baseAddress)});
     }
 
     protected IStorageClient GetStorageClient()
     {
-        return new StorageClient(TestApplication.CreateClient());
+        return new Client.StorageClient(GetHttpClient());
     }
 }

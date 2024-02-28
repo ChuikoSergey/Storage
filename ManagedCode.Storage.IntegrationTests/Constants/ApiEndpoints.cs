@@ -3,6 +3,7 @@
 public static class ApiEndpoints
 {
     public const string Azure = "azure";
+    public const string Files = "files";
     
     public static class Base
     {

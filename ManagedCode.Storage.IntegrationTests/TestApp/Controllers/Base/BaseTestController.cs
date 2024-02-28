@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ManagedCode.Storage.IntegrationTests.TestApp.Controllers.Base;
 
-[ApiController]
 public abstract class BaseTestController<TStorage> : ControllerBase
     where TStorage : IStorage
 {

@@ -44,23 +44,7 @@ public class StorageClient : IStorageClient
 
     public event EventHandler<ProgressStatus>? OnProgressStatusChanged;
 
-    public async Task<Result<BlobMetadata>> UploadFile(Stream stream, string apiUrl, string contentName, CancellationToken cancellationToken = default)
-    {
-        using var streamContent = new StreamContent(stream);
-        using var formData = new MultipartFormDataContent();
-        formData.Add(streamContent, contentName, contentName);
-
-        var response = await _httpClient.PostAsync(apiUrl, formData, cancellationToken);
-
-        if (response.IsSuccessStatusCode)
-        {
-            return await response.Content.ReadFromJsonAsync<Result<BlobMetadata>>(cancellationToken: cancellationToken);
-        }
-
-        var content = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken);
-        return Result<BlobMetadata>.Fail(response.StatusCode, content);
-    }
-    
+   
     public async Task<Result<BlobMetadata>> UploadFile(FileInfo fileInfo, string apiUrl, string contentName, CancellationToken cancellationToken = default)
     {
         using var streamContent = new StreamContent(fileInfo.OpenRead());
@@ -211,9 +195,19 @@ public class StorageClient : IStorageClient
         throw new NotImplementedException();
     }
 
-    public Task<Result<BlobMetadata>> UploadAsync(Stream stream, UploadOptions options, CancellationToken cancellationToken = default)
+    public async Task<Result<BlobMetadata>> UploadAsync(Stream stream, UploadOptions options, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        using var streamContent = new StreamContent(stream);
+
+        var response = await _httpClient.PostAsync(options.ApiEndpoint, streamContent, cancellationToken);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<Result<BlobMetadata>>(cancellationToken: cancellationToken);
+        }
+
+        var content = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken);
+        return Result<BlobMetadata>.Fail(response.StatusCode, content);        
     }
 
     public Task<Result<BlobMetadata>> UploadAsync(byte[] data, UploadOptions options, CancellationToken cancellationToken = default)
@@ -226,9 +220,19 @@ public class StorageClient : IStorageClient
         throw new NotImplementedException();
     }
 
-    public Task<Result<BlobMetadata>> UploadAsync(FileInfo fileInfo, UploadOptions options, CancellationToken cancellationToken = default)
+    public async Task<Result<BlobMetadata>> UploadAsync(FileInfo fileInfo, UploadOptions options, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        using var streamContent = new StreamContent(fileInfo.OpenRead());
+
+        var response = await _httpClient.PostAsync(options.ApiEndpoint, streamContent, cancellationToken);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<Result<BlobMetadata>>(cancellationToken: cancellationToken);
+        }
+
+        var content = await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken);
+        return Result<BlobMetadata>.Fail(response.StatusCode, content);  
     }
 
     public Task<Result<BlobMetadata>> UploadAsync(Stream stream, Action<UploadOptions> action, CancellationToken cancellationToken = default)

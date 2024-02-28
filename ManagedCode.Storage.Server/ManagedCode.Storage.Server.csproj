@@ -6,8 +6,6 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <DebugType>embedded</DebugType>
         <Nullable>enable</Nullable>
-        <IsPackable>true</IsPackable>
-        <OutputType>Library</OutputType>
     </PropertyGroup>
 
     <!--NuGet-->
@@ -20,10 +18,13 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ManagedCode.Storage.Core\ManagedCode.Storage.Core.csproj" />
+        <ProjectReference Include="..\ManagedCode.Storage.FileSystem\ManagedCode.Storage.FileSystem.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ManagedCode.MimeTypes" Version="1.0.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="ManagedCode.MimeTypes" Version="1.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
 </Project>
